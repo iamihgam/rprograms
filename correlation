@@ -1,0 +1,25 @@
+# writing a file to calculate the corr and check it with threshold
+corr <- function(directory,threshold=0){
+  # list the csv files and read it 
+  x <- list.files(directory,full.names=TRUE)
+  dat <- data.frame()
+  output <- vector()
+  # for each file calculating the no. of  completecases 
+  for (i in 1:332){
+    nob <- sum(complete.cases(read.csv(x[i])))
+    dat <-  read.csv(x[i])
+    #check the complete cases against the threshold
+    if (nob > threshold){
+      output[i] <-cor(dat$nitrate, dat$sulfate, use="complete.obs")
+           
+    }
+    else{ 0}
+  }
+  return(output[!is.na(output[id])])
+  }
+# in line 18 , instead of complete.cases na.omit is used, it gives an
+# error Error in output[na.omit(output[id])] : 
+#only 0's may be mixed with negative subscripts
+# inside for loop
+  #unless one reads, store and printing, and indexing, [i] need not be used
+  #especially for dataframe [i] for elements is not necessary when assigning

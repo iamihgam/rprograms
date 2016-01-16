@@ -1,0 +1,30 @@
+# Ranking the best hospitals in every 50 states of the United states with least mortality rates
+
+rankall <- function(outcome,num="best") {
+  # Read the files into "outcare"
+  outcare <-read.csv("outcome-of-care-measures.csv",na.strings="Not Available",stringsAsFactors=FALSE)
+  # assigning  names  for col 11,17 and 23
+  outcomes <- c("heart attack" = 11, "heart failure" = 17, "pneumonia"=23)
+  # printing error message for outcome
+  #if (!outcome %in% outcomes) stop("invalid outcome")
+  # subsetting a particular outcome column with respect to hospital name and state
+  carecol <- outcare[,c(2,7,outcomes[outcome])]
+  names(carecol) <- c("hospital","STATE","outcome")
+  # removing NAs
+  carecol <- carecol[complete.cases(carecol),]
+  # apply ranking via order
+  sort_carecol <- carecol[order(carecol$STATE,carecol$outcome,carecol$hospital),]
+  # split based on state
+  splitcare <- split(sort_carecol,sort_carecol$STATE)
+  # collecting the best&worst hospitals in each state
+  if (num == "worst"){
+    besthosp <- lapply(splitcare,function(x){nrow(x)})} 
+    
+  if (num == "best"){ num <- 1}
+  besthosp <- lapply(splitcare,function(x){x$hospital[num]})
+  hospital <- unlist(besthosp)
+  state <- names(besthosp)
+  besthospitals <- data.frame(hospital,state)
+  besthospitals
+  
+}

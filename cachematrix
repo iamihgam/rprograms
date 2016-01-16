@@ -1,0 +1,27 @@
+# function for makecachematrix
+makecachematrix <- function(x = matrix()){
+  i <- NULL
+  set <- function(y){ # change the value to new input
+    x <<- y # changes the value of  x to the new input y using cbind
+    i <<- NULL # discard the value of old_inverse_value since new value y assumes to x
+  }
+  get <- function()x # store the value from the above set
+  setinverse <- function(inverse) i <<-inverse # store the value of inverse to i for use in set(y)
+  getinverse <- function() i # get the  value from setinverse function
+  list(set = set, get= get,
+       setinverse = setinverse,
+       getinverse = getinverse)
+}
+
+# function 2 : cachesolve will solve the matrix for inverse if there is no previous solved inverse value
+cachesolve <- function(x,...){
+  i <- x$getinverse
+  if (!is.null(i)){ # checking if inverse is already calculated
+    message("getting cached inverse data")
+    return(i)
+  }
+  data <- x$get()
+  i <- solve(data,...)
+  x$setinverse(i)
+  i  
+}

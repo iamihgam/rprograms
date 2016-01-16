@@ -1,0 +1,17 @@
+myfunction <- function(x){
+	y <- rnorm(100)
+	mean(y)
+}
+ above50 <- function(x,y,z) # works fine
+ {
+   use <- x>y & x<z
+   x[use]
+ }
+columnmean <- function(y){
+        nc <- ncol(y)
+        meanscol <- numeric(nc)
+        for (i in 1:nc){
+          meanscol[i]= mean(y[,i])
+          }
+          meanscol
+}
